@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akkai 3D — Clube de Assinatura Infantil</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD93D;
+    --orange: #FF6B35;
+    --purple: #7B5EA7;
+    --purple-light: #A78BD4;
+    --teal: #2EC4B6;
+    --pink: #FF6BA8;
+    --green: #6BCB77;
+    --bg: #FFF9EF;
+    --white: #FFFFFF;
+    --dark: #2D2A3E;
+    --text: #3D3A50;
+    --text-light: #8884A0;
+    --card-radius: 24px;
+    --btn-radius: 50px;
+    --shadow: 0 8px 32px rgba(45,42,62,0.10);
+    --shadow-lg: 0 16px 48px rgba(45,42,62,0.16);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px;
+    background: rgba(255,249,239,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid rgba(255,217,61,0.2);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: var(--shadow); }
+  .nav-logo {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.7rem; font-weight: 800;
+    color: var(--dark);
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-logo .badge {
+    background: var(--yellow);
+    color: var(--dark);
+    font-size: 0.6rem; font-weight: 900;
+    padding: 2px 8px; border-radius: 20px;
+    letter-spacing: 0.5px;
+    transform: rotate(-4deg);
+    display: inline-block;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--text);
+    font-weight: 700; font-size: 0.95rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange); color: #fff;
+    border: none; border-radius: var(--btn-radius);
+    padding: 10px 24px; font-weight: 800; font-size: 0.95rem;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Nunito', sans-serif;
+    text-decoration: none;
+  }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,53,0.35); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 40px 60px;
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #FFF3D6 0%, #FFF9EF 60%, #E8F7FF 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -80px; right: -80px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,217,61,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -100px; left: -60px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(46,196,182,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center; width: 100%; position: relative; z-index: 1;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--yellow); color: var(--dark);
+    border-radius: 50px; padding: 6px 16px;
+    font-weight: 800; font-size: 0.82rem; letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    animation: bounceIn 0.6s cubic-bezier(.36,.07,.19,.97);
+  }
+  .hero-tag .dot { width: 8px; height: 8px; background: var(--orange); border-radius: 50%; }
+  .hero h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 800; line-height: 1.15;
+    color: var(--dark); margin-bottom: 20px;
+  }
+  .hero h1 .highlight {
+    color: var(--orange);
+    position: relative; display: inline-block;
+  }
+  .hero h1 .highlight::after {
+    content: '';
+    position: absolute; bottom: 2px; left: 0; right: 0;
+    height: 6px; background: var(--yellow); z-index: -1; border-radius: 4px;
+  }
+  .hero-sub {
+    font-size: 1.15rem; color: var(--text-light);
+    line-height: 1.7; margin-bottom: 36px; font-weight: 600;
+  }
+  .hero-btns { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--orange); color: #fff;
+    border: none; border-radius: var(--btn-radius);
+    padding: 16px 36px; font-weight: 800; font-size: 1.05rem;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Nunito', sans-serif;
+    box-shadow: 0 6px 0 #c94e1c;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 9px 0 #c94e1c; }
+  .btn-primary:active { transform: translateY(2px); box-shadow: 0 3px 0 #c94e1c; }
+  .btn-secondary {
+    background: transparent; color: var(--dark);
+    border: 2.5px solid var(--dark); border-radius: var(--btn-radius);
+    padding: 14px 32px; font-weight: 800; font-size: 1.05rem;
+    cursor: pointer; transition: all 0.2s;
+    font-family: 'Nunito', sans-serif;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-secondary:hover { background: var(--dark); color: #fff; }
+  .hero-stats {
+    display: flex; gap: 32px; margin-top: 40px;
+  }
+  .hero-stat { text-align: left; }
+  .hero-stat strong {
+    display: block; font-family: 'Baloo 2', cursive;
+    font-size: 1.8rem; font-weight: 800; color: var(--dark);
+  }
+  .hero-stat span { font-size: 0.85rem; color: var(--text-light); font-weight: 600; }
+
+  /* Hero Visual */
+  .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+  .hero-box-main {
+    width: 340px; height: 340px;
+    background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
+    border-radius: 40% 60% 55% 45% / 45% 50% 50% 55%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    animation: morph 8s ease-in-out infinite;
+    box-shadow: 0 20px 60px rgba(123,94,167,0.35);
+  }
+  @keyframes morph {
+    0%,100% { border-radius: 40% 60% 55% 45% / 45% 50% 50% 55%; }
+    25% { border-radius: 55% 45% 40% 60% / 50% 45% 55% 50%; }
+    50% { border-radius: 45% 55% 60% 40% / 55% 60% 40% 45%; }
+    75% { border-radius: 60% 40% 45% 55% / 40% 55% 45% 60%; }
+  }
+  .hero-box-emoji { font-size: 7rem; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2)); animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  .hero-badge {
+    position: absolute; background: var(--white); border-radius: 16px;
+    padding: 10px 16px; box-shadow: var(--shadow); font-weight: 800;
+    display: flex; align-items: center; gap: 8px; font-size: 0.88rem;
+    animation: floatAlt 4s ease-in-out infinite;
+  }
+  @keyframes floatAlt { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+  .hero-badge.top-right { top: 20px; right: -10px; animation-delay: 0.5s; }
+  .hero-badge.bottom-left { bottom: 30px; left: -20px; animation-delay: 1s; }
+  .hero-badge.mid-left { top: 50%; left: -30px; transform: translateY(-50%); animation-delay: 1.5s; }
+  .hero-badge .icon { font-size: 1.4rem; }
+
+  /* ─── SECTION COMMONS ─── */
+  section { padding: 80px 40px; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-tag {
+    display: inline-block; background: var(--yellow);
+    color: var(--dark); border-radius: 50px; padding: 4px 16px;
+    font-weight: 800; font-size: 0.78rem; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800; color: var(--dark); margin-bottom: 12px;
+  }
+  .section-sub { color: var(--text-light); font-size: 1.05rem; font-weight: 600; max-width: 560px; line-height: 1.6; }
+  .text-center { text-align: center; }
+  .text-center .section-sub { margin: 0 auto; }
+
+  /* ─── HOW IT WORKS ─── */
+  .how-bg {
+    background: var(--white);
+  }
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px; margin-top: 48px; position: relative;
+  }
+  .step-connector {
+    display: none;
+  }
+  .step-card {
+    background: var(--bg); border-radius: var(--card-radius);
+    padding: 36px 28px; text-align: center;
+    position: relative; transition: transform 0.25s;
+    border: 2px solid transparent;
+  }
+  .step-card:hover { transform: translateY(-6px); border-color: var(--yellow); }
+  .step-num {
+    position: absolute; top: -16px; left: 24px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--dark); color: #fff;
+    font-weight: 900; font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-icon { font-size: 3.2rem; margin-bottom: 16px; display: block; }
+  .step-card h3 { font-family: 'Baloo 2', cursive; font-size: 1.15rem; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+  .step-card p { font-size: 0.9rem; color: var(--text-light); line-height: 1.6; font-weight: 600; }
+
+  /* ─── DESTAQUE DO MÊS ─── */
+  .featured-section { background: linear-gradient(135deg, #2D2A3E 0%, #3D3A50 100%); }
+  .featured-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  }
+  .featured-tag { background: var(--yellow); }
+  .featured-section .section-title { color: #fff; }
+  .featured-section .section-sub { color: rgba(255,255,255,0.65); }
+  .featured-desc { color: rgba(255,255,255,0.8); font-size: 1rem; line-height: 1.7; margin: 20px 0 32px; font-weight: 600; }
+  .featured-items {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px;
+  }
+  .featured-item-chip {
+    background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2);
+    color: #fff; border-radius: 50px; padding: 6px 14px;
+    font-size: 0.82rem; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .featured-visual {
+    display: flex; justify-content: center; align-items: center;
+    position: relative;
+  }
+  .dino-box {
+    width: 320px; height: 320px;
+    background: linear-gradient(135deg, #6BCB77 0%, #2EC4B6 100%);
+    border-radius: var(--card-radius);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    transform: rotate(-4deg);
+    transition: transform 0.3s;
+  }
+  .dino-box:hover { transform: rotate(0deg) scale(1.04); }
+  .dino-box .dino-emoji { font-size: 8rem; animation: float 3.5s ease-in-out infinite; }
+  .dino-label {
+    position: absolute; bottom: -16px; right: -16px;
+    background: var(--yellow); color: var(--dark);
+    border-radius: 14px; padding: 8px 16px;
+    font-weight: 800; font-size: 0.85rem;
+    box-shadow: var(--shadow);
+    transform: rotate(4deg);
+  }
+
+  /* ─── PLANOS ─── */
+  .plans-section { background: var(--bg); }
+  .plans-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+    margin-top: 48px; max-width: 800px; margin-left: auto; margin-right: auto;
+  }
+  .plan-card {
+    background: var(--white); border-radius: var(--card-radius);
+    padding: 40px 32px; position: relative;
+    border: 2.5px solid transparent;
+    transition: transform 0.25s, box-shadow 0.25s;
+    box-shadow: var(--shadow);
+  }
+  .plan-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .plan-card.pro {
+    border-color: var(--orange);
+    background: linear-gradient(160deg, #fff9f6 0%, #fff 100%);
+  }
+  .plan-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--orange); color: #fff;
+    border-radius: 50px; padding: 4px 18px;
+    font-size: 0.75rem; font-weight: 900; letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .plan-icon { font-size: 2.4rem; margin-bottom: 12px; display: block; }
+  .plan-name {
+    font-family: 'Baloo 2', cursive; font-size: 1.4rem; font-weight: 800;
+    color: var(--dark); margin-bottom: 8px;
+  }
+  .plan-card.pro .plan-name { color: var(--orange); }
+  .plan-tagline { color: var(--text-light); font-size: 0.88rem; font-weight: 600; margin-bottom: 24px; }
+  .plan-items { list-style: none; margin-bottom: 28px; }
+  .plan-items li {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.07);
+    font-weight: 700; font-size: 0.92rem;
+  }
+  .plan-items li:last-child { border-bottom: none; }
+  .plan-items li .check { color: var(--green); font-size: 1.1rem; }
+  .plan-items li .item-tag {
+    margin-left: auto; font-size: 0.7rem; font-weight: 800;
+    background: var(--yellow); color: var(--dark);
+    border-radius: 6px; padding: 2px 8px;
+  }
+  .btn-plan {
+    width: 100%; padding: 14px; border: none; border-radius: var(--btn-radius);
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-plan.basic { background: var(--dark); color: #fff; }
+  .btn-plan.basic:hover { background: var(--purple); }
+  .btn-plan.pro-btn {
+    background: var(--orange); color: #fff;
+    box-shadow: 0 5px 0 #c94e1c;
+  }
+  .btn-plan.pro-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #c94e1c; }
+
+  /* ─── KIT ITEMS ─── */
+  .kit-section { background: var(--white); }
+  .kit-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px; margin-top: 48px;
+  }
+  .kit-card {
+    background: var(--bg); border-radius: var(--card-radius);
+    padding: 28px 20px; text-align: center;
+    transition: transform 0.25s;
+    cursor: default;
+  }
+  .kit-card:hover { transform: translateY(-8px); }
+  .kit-card:hover .kit-icon { transform: scale(1.2) rotate(-5deg); }
+  .kit-icon { font-size: 3rem; margin-bottom: 12px; display: block; transition: transform 0.3s; }
+  .kit-card h4 { font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 800; color: var(--dark); margin-bottom: 6px; }
+  .kit-card p { font-size: 0.82rem; color: var(--text-light); line-height: 1.5; font-weight: 600; }
+
+  /* ─── BENEFITS ─── */
+  .benefits-section { background: var(--bg); }
+  .benefits-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px; margin-top: 48px;
+  }
+  .benefit-card {
+    border-radius: var(--card-radius); padding: 32px 24px;
+    transition: transform 0.25s;
+  }
+  .benefit-card:hover { transform: translateY(-6px); }
+  .benefit-card:nth-child(1) { background: linear-gradient(135deg, #FFD93D22, #FFD93D44); border: 2px solid #FFD93D55; }
+  .benefit-card:nth-child(2) { background: linear-gradient(135deg, #FF6B3522, #FF6B3544); border: 2px solid #FF6B3555; }
+  .benefit-card:nth-child(3) { background: linear-gradient(135deg, #2EC4B622, #2EC4B644); border: 2px solid #2EC4B655; }
+  .benefit-card:nth-child(4) { background: linear-gradient(135deg, #FF6BA822, #FF6BA844); border: 2px solid #FF6BA855; }
+  .benefit-icon { font-size: 2.6rem; margin-bottom: 14px; display: block; }
+  .benefit-card h4 { font-family: 'Baloo 2', cursive; font-size: 1.15rem; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+  .benefit-card p { font-size: 0.9rem; color: var(--text-light); line-height: 1.6; font-weight: 600; }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials-section { background: var(--white); }
+  .testi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; margin-top: 48px;
+  }
+  .testi-card {
+    background: var(--bg); border-radius: var(--card-radius); padding: 28px;
+    border: 2px solid transparent; transition: border-color 0.2s;
+  }
+  .testi-card:hover { border-color: var(--yellow); }
+  .testi-stars { color: var(--yellow); font-size: 1.1rem; margin-bottom: 12px; letter-spacing: 2px; }
+  .testi-text { font-size: 0.95rem; line-height: 1.7; color: var(--text); font-weight: 600; margin-bottom: 18px; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .testi-avatar.a1 { background: linear-gradient(135deg, var(--purple-light), var(--pink)); }
+  .testi-avatar.a2 { background: linear-gradient(135deg, var(--teal), var(--green)); }
+  .testi-avatar.a3 { background: linear-gradient(135deg, var(--yellow), var(--orange)); }
+  .testi-info strong { display: block; font-weight: 800; font-size: 0.9rem; color: var(--dark); }
+  .testi-info span { font-size: 0.78rem; color: var(--text-light); font-weight: 600; }
+
+  /* ─── FAQ ─── */
+  .faq-section { background: var(--bg); }
+  .faq-list { margin-top: 48px; max-width: 720px; margin-left: auto; margin-right: auto; }
+  .faq-item {
+    background: var(--white); border-radius: 16px; margin-bottom: 12px;
+    overflow: hidden; border: 2px solid transparent; transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: var(--yellow); }
+  .faq-question {
+    width: 100%; background: none; border: none; padding: 20px 24px;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800;
+    color: var(--dark);
+  }
+  .faq-arrow { font-size: 1.2rem; transition: transform 0.3s; color: var(--orange); }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+  .faq-answer {
+    max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.3s;
+    padding: 0 24px; color: var(--text-light); font-size: 0.92rem;
+    font-weight: 600; line-height: 1.7;
+  }
+  .faq-item.open .faq-answer { max-height: 200px; padding: 0 24px 20px; }
+
+  /* ─── CTA BANNER ─── */
+  .cta-banner {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--pink) 100%);
+    text-align: center; padding: 80px 40px;
+    position: relative; overflow: hidden;
+  }
+  .cta-banner::before {
+    content: ''; position: absolute;
+    top: -60px; left: -60px; width: 300px; height: 300px;
+    background: rgba(255,255,255,0.1); border-radius: 50%;
+  }
+  .cta-banner::after {
+    content: ''; position: absolute;
+    bottom: -80px; right: -40px; width: 400px; height: 400px;
+    background: rgba(255,255,255,0.08); border-radius: 50%;
+  }
+  .cta-banner h2 {
+    font-family: 'Baloo 2', cursive; font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800; color: #fff; margin-bottom: 16px; position: relative; z-index: 1;
+  }
+  .cta-banner p { color: rgba(255,255,255,0.85); font-size: 1.1rem; font-weight: 600; margin-bottom: 32px; position: relative; z-index: 1; }
+  .btn-white {
+    background: #fff; color: var(--orange);
+    border: none; border-radius: var(--btn-radius);
+    padding: 16px 40px; font-weight: 900; font-size: 1.05rem;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Nunito', sans-serif;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    position: relative; z-index: 1;
+  }
+  .btn-white:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 10px 32px rgba(0,0,0,0.25); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark); color: rgba(255,255,255,0.65);
+    padding: 48px 40px 32px;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Baloo 2', cursive; font-size: 1.5rem; font-weight: 800;
+    color: #fff; margin-bottom: 8px;
+  }
+  .footer-logo span { color: var(--yellow); }
+  .footer-text { font-size: 0.88rem; line-height: 1.7; max-width: 400px; margin: 0 auto 24px; font-weight: 600; }
+  .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+  .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--yellow); }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes bounceIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    section { padding: 60px 20px; }
+    .hero { padding: 100px 20px 60px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { order: -1; }
+    .hero-box-main { width: 240px; height: 240px; }
+    .hero-box-emoji { font-size: 5rem; }
+    .hero-badge.mid-left { display: none; }
+    .hero-stats { gap: 16px; }
+    .featured-inner { grid-template-columns: 1fr; gap: 40px; }
+    .plans-grid { grid-template-columns: 1fr; max-width: 400px; }
+    .dino-box { width: 240px; height: 240px; }
+    .dino-box .dino-emoji { font-size: 6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    Akkai <span>3D</span>
+    <small class="badge">✨ NOVO</small>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#como-funciona">Como funciona</a></li>
+    <li><a href="#planos">Planos</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#planos" class="nav-cta">Assinar agora 🚀</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag"><span class="dot"></span> Clube de assinatura infantil</div>
+      <h1>Todo mês uma nova <span class="highlight">aventura</span> em 3D!</h1>
+      <p class="hero-sub">Kits temáticos com colecionáveis exclusivos impressos em 3D, direto na porta da sua casa. Diversão, criatividade e surpresas todo mês! 🎉</p>
+      <div class="hero-btns">
+        <a href="#planos" class="btn-primary">Assinar agora 🚀</a>
+        <a href="#como-funciona" class="btn-secondary">Como funciona</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>2.4k+</strong><span>Famílias felizes</span></div>
+        <div class="hero-stat"><strong>48+</strong><span>Temas exclusivos</span></div>
+        <div class="hero-stat"><strong>★ 4.9</strong><span>Avaliação média</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-box-main">
+        <span class="hero-box-emoji">📦</span>
+      </div>
+      <div class="hero-badge top-right"><span class="icon">🦕</span> Kit Dinossauros</div>
+      <div class="hero-badge bottom-left"><span class="icon">🎨</span> 3D Exclusivo</div>
+      <div class="hero-badge mid-left"><span class="icon">⭐</span> +50 itens</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="how-bg" id="como-funciona">
+  <div class="section-inner">
+    <div class="text-center">
+      <span class="section-tag">🗺️ Passo a passo</span>
+      <h2 class="section-title">Como funciona?</h2>
+      <p class="section-sub">Simples assim! Em poucos passos, a aventura chega na casa das crianças.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">1</div>
+        <span class="step-icon">📋</span>
+        <h3>Escolha seu plano</h3>
+        <p>Plano Básico ou PRO — escolha o que combina mais com a sua família e o que a criança vai adorar.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-1">
+        <div class="step-num">2</div>
+        <span class="step-icon">📬</span>
+        <h3>Receba em casa</h3>
+        <p>Todo mês, um kit temático surpresa cheio de colecionáveis 3D exclusivos chega na porta da sua casa.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-2">
+        <div class="step-num">3</div>
+        <span class="step-icon">🎮</span>
+        <h3>Monte e brinque</h3>
+        <p>Hora da diversão! Monte, explore e mergulhe no tema do mês junto com as crianças.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-3">
+        <div class="step-num">4</div>
+        <span class="step-icon">🏆</span>
+        <h3>Colecione!</h3>
+        <p>Cada kit traz itens exclusivos para colecionar. Sua coleção cresce a cada mês!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESTAQUE DO MÊS -->
+<section class="featured-section">
+  <div class="featured-inner">
+    <div class="reveal">
+      <span class="section-tag featured-tag">🌟 Tema do mês</span>
+      <h2 class="section-title" style="color:#fff">Dinossauros no Mundo Jurássico!</h2>
+      <p class="featured-desc">Prepare-se para uma viagem de milhões de anos! Este mês, o kit Akkai 3D traz os maiores e mais ferozes dinossauros para a sua casa. Do amigável Braquiossauro ao imponente T-Rex — todos em impressão 3D de alta qualidade!</p>
+      <div class="featured-items">
+        <span class="featured-item-chip">🦕 T-Rex Articulado</span>
+        <span class="featured-item-chip">🦴 Mini Colecionáveis</span>
+        <span class="featured-item-chip">🎮 Jogo de Cartas</span>
+        <span class="featured-item-chip">🌿 Diorama Jurássico</span>
+      </div>
+      <a href="#planos" class="btn-primary" style="background:var(--teal); box-shadow: 0 6px 0 #1a9e93;">Ver planos 🦖</a>
+    </div>
+    <div class="featured-visual reveal reveal-delay-2">
+      <div class="dino-box">
+        <span class="dino-emoji">🦖</span>
+        <div class="dino-label">Junho 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANOS -->
+<section class="plans-section" id="planos">
+  <div class="section-inner">
+    <div class="text-center">
+      <span class="section-tag">💳 Escolha o seu</span>
+      <h2 class="section-title">Planos de assinatura</h2>
+      <p class="section-sub">Escolha o plano ideal para a criançada e garanta meses de aventura!</p>
+    </div>
+    <div class="plans-grid">
+      <!-- BÁSICO -->
+      <div class="plan-card reveal">
+        <span class="plan-icon">📦</span>
+        <div class="plan-name">Plano Básico</div>
+        <div class="plan-tagline">Perfeito para começar a aventura</div>
+        <ul class="plan-items">
+          <li><span class="check">✔</span> 1 mini colecionável 3D</li>
+          <li><span class="check">✔</span> 1 articulado grande 3D</li>
+          <li><span class="check">✔</span> Cartão do tema do mês</li>
+          <li><span class="check">✔</span> Embalagem temática surpresa</li>
+        </ul>
+        <button class="btn-plan basic">Quero o Básico!</button>
+      </div>
+      <!-- PRO -->
+      <div class="plan-card pro reveal reveal-delay-2">
+        <div class="plan-badge">🔥 MAIS POPULAR</div>
+        <span class="plan-icon">🚀</span>
+        <div class="plan-name">Plano PRO</div>
+        <div class="plan-tagline">A experiência completa para os heróis</div>
+        <ul class="plan-items">
+          <li><span class="check">✔</span> 2 minis colecionáveis 3D <span class="item-tag">+1 Extra</span></li>
+          <li><span class="check">✔</span> 1 articulado grande 3D</li>
+          <li><span class="check">✔</span> 1 fidget toy temático <span class="item-tag">Exclusivo</span></li>
+          <li><span class="check">✔</span> 1 jogo / atividade do tema</li>
+          <li><span class="check">✔</span> Embalagem premium surpresa</li>
+        </ul>
+        <button class="btn-plan pro-btn">Quero o PRO! 🚀</button>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:24px; color:var(--text-light); font-size:0.85rem; font-weight:600;">
+      ⚡ Cancele quando quiser · 🚚 Frete incluso · 🔒 Pagamento seguro
+    </p>
+  </div>
+</section>
+
+<!-- O QUE VEM NO KIT -->
+<section class="kit-section">
+  <div class="section-inner">
+    <div class="text-center">
+      <span class="section-tag">🎁 Conteúdo</span>
+      <h2 class="section-title">O que vem no kit?</h2>
+      <p class="section-sub">Cada kit é cheio de surpresas! Veja o que esperar todo mês.</p>
+    </div>
+    <div class="kit-grid">
+      <div class="kit-card reveal">
+        <span class="kit-icon">🦕</span>
+        <h4>Articulado Grande</h4>
+        <p>Figura articulada impressa em 3D com detalhes incríveis do tema do mês.</p>
+      </div>
+      <div class="kit-card reveal reveal-delay-1">
+        <span class="kit-icon">⭐</span>
+        <h4>Mini Colecionáveis</h4>
+        <p>Miniaturas exclusivas para colecionar e completar a série mês a mês.</p>
+      </div>
+      <div class="kit-card reveal reveal-delay-2">
+        <span class="kit-icon">🎯</span>
+        <h4>Fidget Toy</h4>
+        <p>Brinquedo sensorial temático para desenvolver coordenação e criatividade. <em>(PRO)</em></p>
+      </div>
+      <div class="kit-card reveal reveal-delay-3">
+        <span class="kit-icon">🃏</span>
+        <h4>Jogo do Tema</h4>
+        <p>Jogo de cartas ou atividade divertida para toda a família curtir juntos. <em>(PRO)</em></p>
+      </div>
+      <div class="kit-card reveal reveal-delay-4">
+        <span class="kit-icon">📖</span>
+        <h4>Cartão Temático</h4>
+        <p>Curiosidades e histórias sobre o tema do mês para aprender brincando.</p>
+      </div>
+      <div class="kit-card reveal">
+        <span class="kit-icon">🎀</span>
+        <h4>Embalagem Surpresa</h4>
+        <p>Cada caixa é uma experiência! Abertura especial que deixa as crianças empolgadas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFÍCIOS -->
+<section class="benefits-section">
+  <div class="section-inner">
+    <div class="text-center">
+      <span class="section-tag">💡 Por que Akkai 3D?</span>
+      <h2 class="section-title">Os benefícios do clube</h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card reveal">
+        <span class="benefit-icon">🎨</span>
+        <h4>Estimula a criatividade</h4>
+        <p>Cada kit é uma oportunidade de imaginar, criar e explorar novos mundos e histórias.</p>
+      </div>
+      <div class="benefit-card reveal reveal-delay-1">
+        <span class="benefit-icon">⭐</span>
+        <h4>Colecionáveis exclusivos</h4>
+        <p>Itens únicos, impressos sob demanda — sem encontrar nas lojas. Uma coleção realmente especial.</p>
+      </div>
+      <div class="benefit-card reveal reveal-delay-2">
+        <span class="benefit-icon">📚</span>
+        <h4>Diversão educativa</h4>
+        <p>Cada tema traz conteúdo educativo embutido na brincadeira. Aprender nunca foi tão divertido!</p>
+      </div>
+      <div class="benefit-card reveal reveal-delay-3">
+        <span class="benefit-icon">🎁</span>
+        <h4>Surpresa todo mês</h4>
+        <p>A expectativa de receber o kit é uma alegria por si só. A espera também faz parte da magia!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="testimonials-section">
+  <div class="section-inner">
+    <div class="text-center">
+      <span class="section-tag">💬 Depoimentos</span>
+      <h2 class="section-title">O que as famílias dizem</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Meu filho fica ansioso semanas antes de chegar o kit! Ele adora montar e organizar os colecionáveis. Virou uma tradição na nossa casa!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar a1">👩</div>
+          <div class="testi-info">
+            <strong>Ana Lima</strong>
+            <span>Mãe do Lucas, 7 anos</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"As figuras são de qualidade incrível! Minha filha ficou impressionada com a textura e os detalhes. Vale cada centavo do plano PRO."</p>
+        <div class="testi-author">
+          <div class="testi-avatar a2">👨</div>
+          <div class="testi-info">
+            <strong>Roberto Alves</strong>
+            <span>Pai da Sofia, 9 anos</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Assino há 6 meses e não me arrependo. Os temas são criativos, a entrega é rápida e o atendimento é excelente. Super recomendo!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar a3">👩</div>
+          <div class="testi-info">
+            <strong>Carla Santos</strong>
+            <span>Mãe do Miguel, 8 anos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="section-inner">
+    <div class="text-center">
+      <span class="section-tag">❓ Dúvidas</span>
+      <h2 class="section-title">Perguntas frequentes</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Como funciona a entrega? 📬
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer">Os kits são enviados todo mês, com envio para todo o Brasil. O prazo de entrega varia de 3 a 7 dias úteis após o envio. Você recebe um código de rastreamento por e-mail.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Posso cancelar quando quiser? ❌
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer">Sim! Não temos fidelidade. Você pode cancelar sua assinatura a qualquer momento direto pelo painel do cliente, sem burocracia.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Qual a idade recomendada? 👶
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer">Os kits são desenvolvidos para crianças de 4 a 12 anos. Algumas peças pequenas exigem supervisão para crianças menores de 5 anos.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          As figuras são seguras para crianças? ✅
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer">Sim! Todos os nossos produtos são impressos com filamento atóxico, certificado e seguro. Seguimos todas as normas de segurança infantil.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Posso escolher o tema do kit? 🎨
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer">O tema é definido mensalmente pela equipe Akkai 3D para garantir a surpresa! Mas você pode ver previamente o tema do próximo mês no painel do assinante.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <h2>Pronto para a aventura? 🦖🚀</h2>
+  <p>Junte-se a mais de 2.400 famílias e garanta o kit da sua criança hoje!</p>
+  <button class="btn-white" onclick="document.getElementById('planos').scrollIntoView({behavior:'smooth'})">Começar agora!</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Akkai <span>3D</span></div>
+  <p class="footer-text">Clube de assinatura com kits temáticos e colecionáveis exclusivos impressos em 3D. Diversão, criatividade e aventura todo mês!</p>
+  <div class="footer-links">
+    <a href="#">Sobre nós</a>
+    <a href="#">Política de privacidade</a>
+    <a href="#">Termos de uso</a>
+    <a href="#">Contato</a>
+    <a href="#">Instagram</a>
+  </div>
+  <p class="footer-copy">© 2025 Akkai 3D. Todos os direitos reservados. Feito com ❤️ para crianças aventureiras.</p>
+</footer>
+
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 30);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // FAQ toggle
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+
+</body>
+</html>
