@@ -31,8 +31,8 @@ type MonthlyKit = {
 };
 
 type ClubLandingContent = {
-  plans: ClubPlan[];
-  monthlyKit: MonthlyKit;
+  planos: ClubPlan[];
+  kitMensal: MonthlyKit | null;
 };
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? '/api';
@@ -40,7 +40,7 @@ const WHATSAPP_NUMBER = import.meta.env.VITE_CLUBE_AKKAI_WHATSAPP ?? '';
 const WHATSAPP_LABEL = import.meta.env.VITE_CLUBE_AKKAI_WHATSAPP_LABEL ?? '';
 
 const MOCK_LANDING_CONTENT: ClubLandingContent = {
-  plans: [
+  planos: [
     {
       id: 1,
       slug: 'basico',
@@ -78,7 +78,7 @@ const MOCK_LANDING_CONTENT: ClubLandingContent = {
       beneficios: ['Mais tempo de brincadeira', 'Kit mais completo para presentear'],
     },
   ],
-  monthlyKit: {
+  kitMensal: {
     id: 1,
     referencia: 'Maio 2026',
     titulo: 'Kit Exploradores do Oceano',
@@ -228,7 +228,7 @@ function PlanCard({ plan }: { plan: ClubPlan }) {
         to={`/quero-assinar?plano=${planSlug}`}
         className={`btn-plan ${isPro ? 'pro-btn' : 'basic'}`}
       >
-        {isPro ? 'Quero o PRO! 🚀' : 'Quero o Básico!'}
+        {`Quero o ${plan.nome}!${isPro ? ' 🚀' : ''}`}
       </Link>
     </div>
   );
@@ -264,17 +264,17 @@ function FaqSection() {
 }
 
 function HomePage({
-  plans,
-  monthlyKit,
+  planos,
+  kitMensal,
   isLoading,
   error,
 }: {
-  plans: ClubPlan[];
-  monthlyKit: MonthlyKit | null;
+  planos: ClubPlan[];
+  kitMensal: MonthlyKit | null;
   isLoading: boolean;
   error: string | null;
 }) {
-  useScrollReveal([plans, monthlyKit]);
+  useScrollReveal([planos, kitMensal]);
 
   return (
     <>
@@ -336,15 +336,15 @@ function HomePage({
       </section>
 
       {/* DESTAQUE DO MÊS */}
-      {monthlyKit && (
+      {kitMensal && (
         <section className="featured-section">
           <div className="featured-inner">
             <div className="reveal">
               <span className="section-tag" style={{ background: 'var(--yellow)' }}>🌟 Tema do mês</span>
-              <h2 className="section-title">{monthlyKit.titulo}</h2>
-              <p className="featured-desc">{monthlyKit.descricao}</p>
+              <h2 className="section-title">{kitMensal.titulo}</h2>
+              <p className="featured-desc">{kitMensal.descricao}</p>
               <div className="featured-items">
-                {monthlyKit.itens.map((item) => (
+                {kitMensal.itens.map((item) => (
                   <span key={item} className="featured-item-chip">{item}</span>
                 ))}
               </div>
@@ -353,7 +353,7 @@ function HomePage({
             <div className="featured-visual reveal reveal-delay-2">
               <div className="kit-box">
                 <span className="kit-box-emoji">📦</span>
-                <div className="kit-box-label">{monthlyKit.referencia}</div>
+                <div className="kit-box-label">{kitMensal.referencia}</div>
               </div>
             </div>
           </div>
@@ -372,10 +372,10 @@ function HomePage({
             <div className="feedback-card">Carregando planos do clube...</div>
           ) : error ? (
             <div className="feedback-card error">{error}</div>
-          ) : plans.length > 0 ? (
+          ) : planos.length > 0 ? (
             <>
               <div className="plans-grid">
-                {plans.slice(0, 2).map((plan) => (
+                {planos.slice(0, 2).map((plan) => (
                   <PlanCard key={plan.id} plan={plan} />
                 ))}
               </div>
@@ -467,15 +467,15 @@ function HomePage({
 }
 
 function PlansPage({
-  plans,
+  planos,
   isLoading,
   error,
 }: {
-  plans: ClubPlan[];
+  planos: ClubPlan[];
   isLoading: boolean;
   error: string | null;
 }) {
-  useScrollReveal([plans]);
+  useScrollReveal([planos]);
 
   return (
     <section className="plans-page-section">
@@ -489,10 +489,10 @@ function PlansPage({
           <div className="feedback-card">Carregando planos disponíveis...</div>
         ) : error ? (
           <div className="feedback-card error">{error}</div>
-        ) : plans.length > 0 ? (
+        ) : planos.length > 0 ? (
           <>
             <div className="plans-page-grid">
-              {plans.map((plan) => (
+              {planos.map((plan) => (
                 <PlanCard key={plan.id} plan={plan} />
               ))}
             </div>
@@ -508,7 +508,7 @@ function PlansPage({
   );
 }
 
-function SubscribePage({ plans, isLoading, error }: { plans: ClubPlan[]; isLoading: boolean; error: string | null }) {
+function SubscribePage({ planos, isLoading, error }: { planos: ClubPlan[]; isLoading: boolean; error: string | null }) {
   const [searchParams] = useSearchParams();
   const selectedPlanFromUrl = searchParams.get('plano') ?? '';
   const [name, setName] = useState('');
@@ -520,11 +520,11 @@ function SubscribePage({ plans, isLoading, error }: { plans: ClubPlan[]; isLoadi
   useEffect(() => { setPlanSlug(selectedPlanFromUrl); }, [selectedPlanFromUrl]);
 
   const selectedPlan =
-    plans.find((plan) => slugify(plan.slug || plan.nome) === planSlug) ?? plans[0] ?? null;
+    planos.find((plan) => slugify(plan.slug || plan.nome) === planSlug) ?? planos[0] ?? null;
 
   useEffect(() => {
-    if (!planSlug && plans[0]) setPlanSlug(slugify(plans[0].slug || plans[0].nome));
-  }, [planSlug, plans]);
+    if (!planSlug && planos[0]) setPlanSlug(slugify(planos[0].slug || planos[0].nome));
+  }, [planSlug, planos]);
 
   const message = buildInterestMessage({ planName: selectedPlan?.nome ?? 'Ainda decidindo', name, email, phone, notes });
   const whatsappUrl = createWhatsAppUrl(message);
@@ -568,11 +568,11 @@ function SubscribePage({ plans, isLoading, error }: { plans: ClubPlan[]; isLoadi
 
           <label className="field">
             <span>Plano de interesse</span>
-            <select value={planSlug} onChange={(e) => setPlanSlug(e.target.value)} disabled={plans.length === 0}>
-              {plans.length === 0 ? (
+            <select value={planSlug} onChange={(e) => setPlanSlug(e.target.value)} disabled={planos.length === 0}>
+              {planos.length === 0 ? (
                 <option value="">Nenhum plano ativo</option>
               ) : (
-                plans.map((plan) => (
+                planos.map((plan) => (
                   <option key={plan.id} value={slugify(plan.slug || plan.nome)}>
                     {plan.nome} — {formatCurrency(plan.valor)}
                   </option>
@@ -655,7 +655,7 @@ export default function App() {
       try {
         const response = await fetchClubLanding();
         if (!active) return;
-        setLandingContent({ plans: response.plans.filter((p) => p.ativo), monthlyKit: response.monthlyKit });
+        setLandingContent({ planos: response.planos.filter((p) => p.ativo), kitMensal: response.kitMensal });
       } catch (error) {
         if (!active) return;
         setLandingContent(MOCK_LANDING_CONTENT);
@@ -681,8 +681,8 @@ export default function App() {
             path="/"
             element={
               <HomePage
-                plans={landingContent.plans}
-                monthlyKit={landingContent.monthlyKit}
+                planos={landingContent.planos}
+                kitMensal={landingContent.kitMensal}
                 isLoading={isLoadingLanding}
                 error={landingError}
               />
@@ -692,7 +692,7 @@ export default function App() {
             path="/planos"
             element={
               <PlansPage
-                plans={landingContent.plans}
+                planos={landingContent.planos}
                 isLoading={isLoadingLanding}
                 error={landingError}
               />
@@ -702,7 +702,7 @@ export default function App() {
             path="/quero-assinar"
             element={
               <SubscribePage
-                plans={landingContent.plans}
+                planos={landingContent.planos}
                 isLoading={isLoadingLanding}
                 error={landingError}
               />

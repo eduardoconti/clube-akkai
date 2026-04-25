@@ -307,6 +307,7 @@ section { padding: 80px 40px; }
   border: 2.5px solid transparent;
   transition: transform 0.25s, box-shadow 0.25s;
   box-shadow: var(--shadow);
+  display: flex; flex-direction: column;
 }
 .plan-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
 .plan-card.pro {
@@ -329,7 +330,7 @@ section { padding: 80px 40px; }
   color: var(--dark); margin-bottom: 20px;
 }
 .plan-price-row span { font-family: 'Nunito', sans-serif; font-size: 0.9rem; color: var(--text-light); font-weight: 600; }
-.plan-items { list-style: none; margin-bottom: 28px; }
+.plan-items { list-style: none; margin-bottom: 28px; flex: 1; }
 .plan-items li {
   display: flex; align-items: center; gap: 10px;
   padding: 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.07);
