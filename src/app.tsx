@@ -194,7 +194,6 @@ function MainNav() {
     <nav className={`site-nav${scrolled ? ' scrolled' : ''}`}>
       <Link to="/" className="nav-logo">
         Clube <span>Akkai</span>
-        <small className="badge">✨ NOVO</small>
       </Link>
       <ul className="nav-links">
         <li><a href="/#como-funciona">Como funciona</a></li>
@@ -297,19 +296,14 @@ function HomePage({
               <Link to="/planos" className="btn-primary">Assinar agora 🚀</Link>
               <a href="#como-funciona" className="btn-secondary">Como funciona</a>
             </div>
-            <div className="hero-stats">
-              <div className="hero-stat"><strong>2.4k+</strong><span>Famílias felizes</span></div>
-              <div className="hero-stat"><strong>48+</strong><span>Temas exclusivos</span></div>
-              <div className="hero-stat"><strong>★ 4.9</strong><span>Avaliação média</span></div>
-            </div>
           </div>
           <div className="hero-visual">
             <div className="hero-box-main">
               <span className="hero-box-emoji">📦</span>
             </div>
             <div className="hero-badge top-right"><span className="icon">🦕</span> Kit Dinossauros</div>
-            <div className="hero-badge bottom-left"><span className="icon">🎨</span> 3D Exclusivo</div>
-            <div className="hero-badge mid-left"><span className="icon">⭐</span> +50 itens</div>
+            <div className="hero-badge bottom-left"><span className="icon">🚚</span> Frete incluso</div>
+            <div className="hero-badge mid-left"><span className="icon">🎁</span> Surpresa todo mês</div>
           </div>
         </div>
       </section>
