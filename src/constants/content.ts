@@ -85,10 +85,19 @@ export const TESTIMONIALS = [
   { stars: '★★★★★', text: '"Assino há 6 meses e não me arrependo. Os temas são criativos, a entrega é rápida e o atendimento é excelente. Super recomendo!"', name: 'Carla Santos', role: 'Mãe do Miguel, 8 anos', avatar: '👩', avatarClass: 'a3' },
 ];
 
+export const HOW_ARRIVES = [
+  { icon: '📦', title: 'Embalagem Premium', desc: 'Cada kit chega em uma embalagem especial, preparada com cuidado para manter a surpresa e a qualidade das peças.' },
+  { icon: '🚚', title: 'Entrega Rápida', desc: 'Enviamos de dentro do Brasil com rastreamento. Receba seu kit em 3 a 7 dias úteis após o envio.' },
+  { icon: '🛡️', title: 'Garantia Total', desc: 'Se chegar danificado, a gente reembolsa ou envia um novo kit, sem complicação. Sua satisfação em primeiro lugar!' },
+  { icon: '🌐', title: 'Frete Incluso', desc: 'Já está tudo incluído! Sem taxas surpresa ou custos adicionais. O que você vê é o que você paga.' },
+];
+
 export const FAQ_ITEMS = [
-  { q: 'Como funciona a entrega? 📬', a: 'Os kits são enviados todo mês, com envio para todo o Brasil. O prazo de entrega varia de 3 a 7 dias úteis após o envio. Você recebe um código de rastreamento por e-mail.' },
-  { q: 'Posso cancelar quando quiser? ❌', a: 'Sim! Não temos fidelidade. Você pode cancelar sua assinatura a qualquer momento direto pelo painel do cliente, sem burocracia.' },
-  { q: 'Qual a idade recomendada? 👶', a: 'Os kits são desenvolvidos para crianças de 4 a 12 anos. Algumas peças pequenas exigem supervisão para crianças menores de 5 anos.' },
-  { q: 'As figuras são seguras para crianças? ✅', a: 'Sim! Todos os nossos produtos são impressos com filamento atóxico, certificado e seguro. Seguimos todas as normas de segurança infantil.' },
-  { q: 'Posso escolher o tema do kit? 🎨', a: 'O tema é definido mensalmente pela equipe Clube Akkai para garantir a surpresa! Mas você pode ver previamente o tema do próximo mês no painel do assinante.' },
+  { category: 'Assinatura', q: 'Como funciona a assinatura? 📝', a: 'Você escolhe um plano (Básico ou PRO), paga mensalmente e recebe um kit novo todo mês! Sem contrato, pode cancelar quando quiser.' },
+  { category: 'Assinatura', q: 'Posso cancelar quando quiser? ❌', a: 'Sim! Não temos fidelidade. Você pode cancelar sua assinatura a qualquer momento direto pelo painel do cliente, sem burocracia.' },
+  { category: 'Entrega', q: 'Como funciona a entrega? 📬', a: 'Os kits são enviados todo mês, com envio para todo o Brasil. O prazo de entrega varia de 3 a 7 dias úteis após o envio. Você recebe um código de rastreamento por e-mail.' },
+  { category: 'Entrega', q: 'Qual o frete? 🚚', a: 'O frete já está incluído no valor do plano! Entregamos em qualquer lugar do Brasil sem custos extras.' },
+  { category: 'Produtos', q: 'Qual a idade recomendada? 👶', a: 'Os kits são desenvolvidos para crianças de 4 a 12 anos. Algumas peças pequenas exigem supervisão para crianças menores de 5 anos.' },
+  { category: 'Produtos', q: 'As figuras são seguras para crianças? ✅', a: 'Sim! Todos os nossos produtos são impressos com filamento atóxico, certificado e seguro. Seguimos todas as normas de segurança infantil.' },
+  { category: 'Produtos', q: 'Posso escolher o tema do kit? 🎨', a: 'O tema é definido mensalmente pela equipe Clube Akkai para garantir a surpresa! Mas você pode ver previamente o tema do próximo mês no painel do assinante.' },
 ];

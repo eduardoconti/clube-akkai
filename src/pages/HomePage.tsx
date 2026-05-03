@@ -3,6 +3,7 @@ import KaiMascot from '../components/mascots/KaiMascot';
 import AliMascot from '../components/mascots/AliMascot';
 import PlanCard from '../components/PlanCard';
 import FaqSection from '../components/FaqSection';
+import HowArrivesSection from '../components/HowArrivesSection';
 import {
   HOW_IT_WORKS,
   KIT_ITEMS,
@@ -73,17 +74,53 @@ export default function HomePage({
           </div>
         </div>
 
-        {/* Mascotes para mobile */}
-        <div className="hero-mascots-row">
-          <div className="hero-mascot kai">
-            <div className="mascot-bubble">Oi! Bora brincar?</div>
-            <KaiMascot />
-            <span className="mascot-name">Kai</span>
+        {/* Layout Mobile: Kai com descrição, Ali com botões */}
+        <div className="hero-mobile-layout">
+          <div className="hero-mobile-header">
+            <div className="hero-tag">
+              <span className="dot" />
+              Clube de assinatura de peças e jogos feitos em impressora 3D
+            </div>
+            <h1>
+              Todo mês uma nova <span className="highlight">aventura</span> em 3D!
+            </h1>
           </div>
-          <div className="hero-mascot ali">
-            <div className="mascot-bubble">Cada kit é incrível!</div>
-            <AliMascot />
-            <span className="mascot-name">Ali</span>
+
+          <div className="hero-mobile-grid">
+            {/* Kai com descrição */}
+            <div className="hero-mobile-col kai-col">
+              <div className="hero-mascot kai">
+                <div className="mascot-bubble">Oi! Bora brincar?</div>
+                <KaiMascot />
+                <span className="mascot-name">Kai</span>
+              </div>
+              <p className="hero-sub">
+                Kits temáticos com colecionáveis exclusivos impressos em 3D, direto na porta da sua
+                casa. Diversão, criatividade e surpresas todo mês! 🎉
+              </p>
+            </div>
+
+            {/* Ali com botões */}
+            <div className="hero-mobile-col ali-col">
+              <div className="hero-mascot ali">
+                <div className="mascot-bubble">Cada kit é incrível!</div>
+                <AliMascot />
+                <span className="mascot-name">Ali</span>
+              </div>
+              <div className="hero-btns">
+                <Link to="/planos" className="btn-primary">Assinar agora 🚀</Link>
+                <a href="#como-funciona" className="btn-secondary">Como funciona</a>
+              </div>
+            </div>
+          </div>
+
+          <div className="hero-stats">
+            <div className="hero-stat">
+              <strong>100%</strong><span>Impressão 3D</span>
+            </div>
+            <div className="hero-stat">
+              <strong>Mensal</strong><span>Kit surpresa</span>
+            </div>
           </div>
         </div>
       </section>
@@ -133,6 +170,9 @@ export default function HomePage({
           </div>
         </section>
       )}
+
+      {/* COMO CHEGA */}
+      <HowArrivesSection />
 
       {/* PLANOS */}
       <section className="plans-section" id="planos">
